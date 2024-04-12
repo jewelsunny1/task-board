@@ -2,7 +2,61 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
-// Todo: create a function to generate a unique task id
+//this allows me to console log the value of the task object onto the local storage//
+//this allows me to save this info when it comes to creating task cards//
+function taskEl () {
+    const enterTitle= document.getElementById('tasktitle').value;
+    const enterDesc= document.getElementById('taskdesc').value;
+    const enterDue= document.getElementById('taskdue').value;
+
+    const task= {
+        title: enterTitle,
+        description: enterDesc,
+        dueDate: enterDue,  
+       
+    };
+    console.log(task);
+    
+//im going wrong somewhere with appending the card// Come back to this!
+//I created a new element to append the value of task object ontp the task cards//
+   const taskCard= document.createElement('div');
+   taskCard.classList.add('card');
+   taskCard.innerHTML=`
+   <div class="card-body">
+    <h4 class= "card-title">${task.title}</h5>
+    <p class="card-text">${task.description}</p>
+    <p class= "card-text"> Due: ${task.dueDate}</p>
+    </div>
+   
+ `;
+//taskcard is appended to the parent document//
+ document.body.appendChild(taskCard);
+
+ $(taskCard).draggable({
+    cursor: 'move',
+ });
+
+ document.getElementById('tasktitle').value='';
+ document.getElementById('taskdesc').value='';
+ document.getElementById('taskdue').value='';
+    
+}
+
+const submit= document.getElementById('submit')
+submit.addEventListener('click',taskEl);
+//by adding.droppable, the lanes (to do, in progress, and done) allows the card that is created to be dropped into the lanes
+$('.lane').droppable({
+    accept: '.card',
+    drop: function( event,ui){
+        $(this).append(ui.draggable.detach());
+
+
+    }
+});
+
+
+  
+//Todo: create a function to generate a unique task id
 function generateTaskId() {
 
 }
@@ -36,3 +90,4 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
